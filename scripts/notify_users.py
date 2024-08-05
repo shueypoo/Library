@@ -8,12 +8,11 @@ from datetime import datetime, timedelta
 import logging
 
 # Configure logging
-logging.basicConfig(filename='C:/Users/cutek/OneDrive/Documents/bootcamp/LibraryPractice/scripts/notify_users.log', level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
-
+logging.basicConfig(filename='C:/Users/cutek/OneDrive/Documents/bootcamp/LibraryPractice/scripts/notify_users.log',
+                    level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
 
 def get_db_connection():
-    # logging.debug('Attempting to connect to the database')
     return psycopg2.connect(
         dbname='Library',
         user='postgres',
@@ -24,7 +23,6 @@ def get_db_connection():
 
 
 def fetch_due_books():
-    # logging.debug('Fetching due books')
     conn = get_db_connection()
     cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
@@ -41,12 +39,22 @@ def fetch_due_books():
     rows = cur.fetchall()
     cur.close()
     conn.close()
-    # logging.debug(f'Due books fetched: {rows}')
     return rows
 
 
-def send_email(recipient, book_title, due_date):
-    # logging.debug(f'Sending email to {recipient} about book {book_title}')
+def log_email_sent(recipient, subject, body):
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute("""
+        INSERT INTO "sEmailH" ("dateTime", "email", "subject", "body")
+        VALUES (CURRENT_TIMESTAMP, %s, %s, %s)
+    """, (recipient, subject, body))
+    conn.commit()
+    cur.close()
+    conn.close()
+
+
+def send_email(recipient, books_due):
     sender_email = os.getenv('EMAIL_USER')
     sender_password = os.getenv('EMAIL_PASS')
 
@@ -55,7 +63,11 @@ def send_email(recipient, book_title, due_date):
     message["To"] = recipient
     message["Subject"] = "Library Book Due Reminder"
 
-    body = f"Dear User,\n\nThis is a reminder that the book '{book_title}' is due on {due_date}.\nPlease return it on time to avoid any late fees.\n\nThank you!"
+    body = "Dear User,\n\nThis is a reminder that the following books are due in 2 days:\n"
+    for book in books_due:
+        body += f"- {book['title']} (Due on {book['dueDate']})\n"
+    body += "\nPlease return them on time to avoid any late fees.\n\nThank you!"
+
     message.attach(MIMEText(body, "plain"))
 
     try:
@@ -64,14 +76,23 @@ def send_email(recipient, book_title, due_date):
             server.login(sender_email, sender_password)
             server.sendmail(sender_email, recipient, message.as_string())
             logging.info(f"Email sent to {recipient}")
+            log_email_sent(recipient, message["Subject"], body)
     except Exception as e:
         logging.error(f"Failed to send email to {recipient}: {e}")
 
 
 def main():
     due_books = fetch_due_books()
+    users_books = {}
+
     for row in due_books:
-        send_email(row['email'], row['title'], row['dueDate'])
+        email = row['email']
+        if email not in users_books:
+            users_books[email] = []
+        users_books[email].append(row)
+
+    for email, books_due in users_books.items():
+        send_email(email, books_due)
 
 
 if __name__ == "__main__":
