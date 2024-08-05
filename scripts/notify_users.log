@@ -1,0 +1,35 @@
+2024-08-05 13:31:15,118 - INFO - Script started
+2024-08-05 13:34:10,116 - INFO - Script started
+2024-08-05 13:34:10,147 - INFO - Script finished
+2024-08-05 14:48:49,892 - INFO - Script started
+2024-08-05 14:48:49,892 - DEBUG - Fetching due books
+2024-08-05 14:48:49,892 - DEBUG - Attempting to connect to the database
+2024-08-05 14:48:49,924 - DEBUG - Due books fetched: []
+2024-08-05 14:48:49,924 - INFO - Script finished
+2024-08-05 14:57:11,280 - INFO - Script started
+2024-08-05 14:57:11,280 - DEBUG - Fetching due books
+2024-08-05 14:57:11,280 - DEBUG - Attempting to connect to the database
+2024-08-05 14:57:11,327 - DEBUG - Due books fetched: []
+2024-08-05 14:57:11,327 - INFO - Script finished
+2024-08-05 14:57:39,884 - INFO - Script started
+2024-08-05 14:57:39,884 - DEBUG - Fetching due books
+2024-08-05 14:57:39,884 - DEBUG - Attempting to connect to the database
+2024-08-05 14:57:39,931 - DEBUG - Due books fetched: []
+2024-08-05 14:57:39,931 - INFO - Script finished
+2024-08-05 14:58:56,224 - INFO - Script started
+2024-08-05 14:58:56,224 - DEBUG - Fetching due books
+2024-08-05 14:58:56,224 - DEBUG - Attempting to connect to the database
+2024-08-05 14:58:56,271 - DEBUG - Due books fetched: [['21@', 'a', datetime.date(2024, 8, 7)]]
+2024-08-05 14:58:56,271 - DEBUG - Sending email to 21@ about book a
+2024-08-05 14:58:57,114 - ERROR - Failed to send email to 21@: {'21@': (553, b'5.1.3 The recipient address <21@> is not a valid RFC 5321 address. For more\n5.1.3 information, go to\n5.1.3  https://support.google.com/a/answer/3221692 and review RFC 5321\n5.1.3 specifications. d75a77b69052e-4518a6e62afsm31981231cf.46 - gsmtp')}
+2024-08-05 14:58:57,114 - INFO - Script finished
+2024-08-05 15:00:00,480 - INFO - Script started
+2024-08-05 15:00:00,480 - DEBUG - Fetching due books
+2024-08-05 15:00:00,480 - DEBUG - Attempting to connect to the database
+2024-08-05 15:00:00,512 - DEBUG - Due books fetched: [['shuyangswu@gmail.com', 'a', datetime.date(2024, 8, 7)]]
+2024-08-05 15:00:00,512 - DEBUG - Sending email to shuyangswu@gmail.com about book a
+2024-08-05 15:00:01,699 - INFO - Email sent to shuyangswu@gmail.com
+2024-08-05 15:00:01,746 - INFO - Script finished
+2024-08-05 15:01:47,808 - INFO - Script started
+2024-08-05 15:01:48,913 - INFO - Email sent to shuyangswu@gmail.com
+2024-08-05 15:01:48,961 - INFO - Script finished
